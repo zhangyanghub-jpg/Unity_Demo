@@ -34,6 +34,7 @@ namespace Platformer.Mechanics
         public Health health;
         public bool controlEnabled = true;
 
+        GUIStyle healthLabelStyle;
         bool jump;
         Vector2 move;
         SpriteRenderer spriteRenderer;
@@ -49,6 +50,28 @@ namespace Platformer.Mechanics
             collider2d = GetComponent<Collider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
+        }
+
+        void OnGUI()
+        {
+            if (health == null) return;
+
+            if (healthLabelStyle == null)
+            {
+                healthLabelStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 24,
+                    fontStyle = FontStyle.Bold
+                };
+            }
+
+            var label = $"HP: {health.CurrentHP}/{health.maxHP}";
+            var rect = new Rect(20, 20, 240, 40);
+
+            healthLabelStyle.normal.textColor = Color.black;
+            GUI.Label(new Rect(rect.x + 2, rect.y + 2, rect.width, rect.height), label, healthLabelStyle);
+            healthLabelStyle.normal.textColor = Color.white;
+            GUI.Label(rect, label, healthLabelStyle);
         }
 
         protected override void Update()

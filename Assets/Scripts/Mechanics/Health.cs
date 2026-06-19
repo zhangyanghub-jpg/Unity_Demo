@@ -20,6 +20,11 @@ namespace Platformer.Mechanics
         /// </summary>
         public bool IsAlive => currentHP > 0;
 
+        /// <summary>
+        /// The current hit points for the entity.
+        /// </summary>
+        public int CurrentHP => currentHP;
+
         int currentHP;
 
         /// <summary>
@@ -36,12 +41,30 @@ namespace Platformer.Mechanics
         /// </summary>
         public void Decrement()
         {
-            currentHP = Mathf.Clamp(currentHP - 1, 0, maxHP);
+            Decrement(1);
+        }
+
+        /// <summary>
+        /// Decrement the HP of the entity by a specific amount.
+        /// </summary>
+        public void Decrement(int amount)
+        {
+            if (amount <= 0 || currentHP == 0) return;
+
+            currentHP = Mathf.Clamp(currentHP - amount, 0, maxHP);
             if (currentHP == 0)
             {
                 var ev = Schedule<HealthIsZero>();
                 ev.health = this;
             }
+        }
+
+        /// <summary>
+        /// Restore the entity to full HP.
+        /// </summary>
+        public void RestoreFull()
+        {
+            currentHP = maxHP;
         }
 
         /// <summary>

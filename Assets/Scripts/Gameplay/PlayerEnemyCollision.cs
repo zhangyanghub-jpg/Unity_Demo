@@ -13,6 +13,8 @@ namespace Platformer.Gameplay
     /// <typeparam name="EnemyCollision"></typeparam>
     public class PlayerEnemyCollision : Simulation.Event<PlayerEnemyCollision>
     {
+        const int enemyTouchDamage = 5;
+
         public EnemyController enemy;
         public PlayerController player;
 
@@ -46,7 +48,8 @@ namespace Platformer.Gameplay
             }
             else
             {
-                Schedule<PlayerDeath>();
+                player.health.Decrement(enemyTouchDamage);
+                player.Bounce(5);
             }
         }
     }
